@@ -1,4 +1,4 @@
-package com.example.playground.rest;
+package com.example.playground.rest.webclient;
 
 import com.example.playground.provider.ExampleWebClient;
 import org.springframework.http.MediaType;
@@ -19,11 +19,11 @@ import java.util.Map;
 @RequestMapping("/example/reactive")
 public class ExampleReactiveController {
 
-    private static final String URI_BASE = "http://localhost:8090/example/rest/resource";
+    private static final String URI_BASE = "http://localhost:8080/example/rest/resource";
     private static final String URI_WITH_VARIABLES = URI_BASE + "?date={date}&test={test}";
     private static final String DATE = "date";
     private static final String TEST = "test";
-    private ExampleWebClient client;
+    private final ExampleWebClient client;
 
     public ExampleReactiveController(ExampleWebClient client) {
         this.client = client;

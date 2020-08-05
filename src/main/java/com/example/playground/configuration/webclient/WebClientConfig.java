@@ -1,4 +1,4 @@
-package com.example.playground.configuration;
+package com.example.playground.configuration.webclient;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -6,7 +6,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 
 @Configuration
-public class PlaygroundConfig {
+public class WebClientConfig {
 
     @Bean
     public WebClient webClient(WebClient.Builder webClientBuilder) {
