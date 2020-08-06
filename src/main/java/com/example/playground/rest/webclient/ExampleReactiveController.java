@@ -1,7 +1,12 @@
 package com.example.playground.rest.webclient;
 
 import com.example.playground.provider.ExampleWebClient;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,37 +25,47 @@ import java.util.Map;
 public class ExampleReactiveController {
 
     private static final String URI_BASE = "http://localhost:8080/example/rest/resource";
-    private static final String URI_WITH_VARIABLES = URI_BASE + "?date={date}&test={test}";
+    private static final String URI_WITH_VARIABLES = URI_BASE + "?date={date}&message={message}";
     private static final String DATE = "date";
-    private static final String TEST = "test";
+    private static final String MESSAGE = "message";
+    private static final String OPERATION_BASE = "Get a hello message with the given message the date. It calls simply" +
+            " asynchronously with ";
     private final ExampleWebClient client;
 
     public ExampleReactiveController(ExampleWebClient client) {
         this.client = client;
     }
 
-    @RequestMapping("/resource")
-    public String getResourceWithUriVariables(@RequestParam(required = false) Instant date) {
-         return client.callAsyncJsonService(URI_WITH_VARIABLES, createHeaderMap(), formatIsoDateTime(date), "test:+")
-                 .block();
-    }
-
-    @RequestMapping("/resource2")
-    public String getResourceWithUriComponentBuilder(@RequestParam(required = false) Instant date) {
+    @Operation(summary = OPERATION_BASE + "concrete uri (uses UriComponentsBuilder).")
+    @ApiResponses(value ={
+            @ApiResponse(responseCode = "200", description = "E.g.: \"hello async test with concrete uri " +
+                    "(2020-07-10T16:30:00Z)\"")
+    })
+    @GetMapping("/resource-with-concrete-uri")
+    public String getResourceWithUriComponentBuilder(
+            @Parameter(description = "Given date", required = true, example = "2020-07-10T16:30:00Z")
+            @RequestParam Instant date) {
         URI uri = UriComponentsBuilder.fromHttpUrl(URI_BASE)
                 .queryParam(DATE, formatIsoDateTime(date))
-                .queryParam(TEST, "test:+")
+                .queryParam(MESSAGE, "async test with concrete uri")
                 .build()
                 .toUri();
         return client.callAsyncJsonService(uri, createHeaderMap())
                 .block();
     }
 
-    @RequestMapping("/resource3")
-    public String getResourceWithUriVariablesMap(@RequestParam(required = false) Instant date) {
+    @Operation(summary = OPERATION_BASE + "template uri and uriVariables.")
+    @ApiResponses(value ={
+            @ApiResponse(responseCode = "200", description = "E.g.: \"hello async test with template uri and " +
+                    "uriVariables (2020-07-10T16:30:00Z)\"")
+    })
+    @GetMapping("/resource-with-template-and-uri-variables")
+    public String getResourceWithUriVariablesMap(
+            @Parameter(description = "Given date", required = true, example = "2020-07-10T16:30:00Z")
+            @RequestParam Instant date) {
         Map<String, String> uriMap = new HashMap<>();
         uriMap.put(DATE, formatIsoDateTime(date));
-        uriMap.put(TEST, "test:+");
+        uriMap.put(MESSAGE, "async test with template uri and uriVariables");
         return client.callAsyncJsonService(URI_WITH_VARIABLES, createHeaderMap(), uriMap)
                 .block();
     }
