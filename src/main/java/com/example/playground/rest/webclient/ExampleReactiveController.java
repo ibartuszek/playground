@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,24 +20,24 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
-
+@Tag(name = "ExampleReactiveController", description = "call BaseController asynchronously with different uri creation")
 @RestController
-@RequestMapping("/example/reactive")
+@RequestMapping("/playground/reactive")
 public class ExampleReactiveController {
 
-    private static final String URI_BASE = "http://localhost:8080/example/rest/resource";
+    private static final String URI_BASE = "http://localhost:8080/playground/rest/resource";
     private static final String URI_WITH_VARIABLES = URI_BASE + "?date={date}&message={message}";
     private static final String DATE = "date";
     private static final String MESSAGE = "message";
-    private static final String OPERATION_BASE = "Get a hello message with the given message the date. It calls simply" +
-            " asynchronously with ";
+    private static final String OPERATION_BASE = "Get an example message with the date. It calls BaseController " +
+            "asynchronously with ";
     private final ExampleWebClient client;
 
     public ExampleReactiveController(ExampleWebClient client) {
         this.client = client;
     }
 
-    @Operation(summary = OPERATION_BASE + "concrete uri (uses UriComponentsBuilder).")
+    @Operation(summary = OPERATION_BASE + "concrete uri (it uses UriComponentsBuilder).")
     @ApiResponses(value ={
             @ApiResponse(responseCode = "200", description = "E.g.: \"hello async test with concrete uri " +
                     "(2020-07-10T16:30:00Z)\"")
@@ -54,7 +55,7 @@ public class ExampleReactiveController {
                 .block();
     }
 
-    @Operation(summary = OPERATION_BASE + "template uri and uriVariables.")
+    @Operation(summary = OPERATION_BASE + "template uri and uriVariables (webClient creates the concrete uri).")
     @ApiResponses(value ={
             @ApiResponse(responseCode = "200", description = "E.g.: \"hello async test with template uri and " +
                     "uriVariables (2020-07-10T16:30:00Z)\"")
