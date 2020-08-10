@@ -16,6 +16,7 @@
 
     <properties>
         <java.version>11</java.version>
+        <spring-kafka.version>2.5.4.RELEASE</spring-kafka.version>
         <springdoc-openapi-data-rest.version>1.4.3</springdoc-openapi-data-rest.version>
     </properties>
 
@@ -37,7 +38,7 @@
             <optional>true</optional>
         </dependency>
 
-        <!-- Openapi - documentation -->
+        <!-- Openapi -->
 
         <dependency>
             <groupId>org.springdoc</groupId>
@@ -49,6 +50,13 @@
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-data-rest</artifactId>
             <version>${springdoc-openapi-data-rest.version}</version>
+        </dependency>
+
+        <!-- Kafka -->
+        <dependency>
+            <groupId>org.springframework.kafka</groupId>
+            <artifactId>spring-kafka</artifactId>
+            <version>${spring-kafka.version}</version>
         </dependency>
 
         <!-- Test -->

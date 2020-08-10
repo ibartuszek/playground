@@ -1,5 +1,8 @@
 kafka:
   enabled: true
+  bootstrapAddress: 192.168.0.216:9092
+  topic: test-topic
+  group-id: test-group-id
   producer:
     refresh-initial-delay: PT0S
     refresh-delay: PT10S
