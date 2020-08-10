@@ -1,0 +1,5 @@
+kafka:
+  enabled: true
+  producer:
+    refresh-initial-delay: PT0S
+    refresh-delay: PT10S
