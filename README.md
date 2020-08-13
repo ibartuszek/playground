@@ -3,6 +3,7 @@ The purpose of this project is to try-out different technologies and frameworks 
 spring-boot web-application. They are separated into different packages and different commits.
  - spring web-flux (webclient)
  - open-api 3 (openapi)
+ - kafka (kafka)
 
 ### Sample Usage
 User can use the application via:
@@ -27,6 +28,7 @@ User can use the application via:
 - <a href="https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/">Spring boot documentation</a>
 - <a href="https://springdoc.org">springdoc</a>
 - <a href="https://kafka.apache.org/">kafka</a>
+- <a href="https://docs.spring.io/spring-kafka/reference/html/">spring kafka</a>
 - <a href="https://www.baeldung.com/spring-kafka">Baeldung: Intro to Apache Kafka with Spring</a>
 
 ### Contact:

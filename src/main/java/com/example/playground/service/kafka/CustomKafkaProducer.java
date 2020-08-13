@@ -1,11 +1,9 @@
-package com.example.playground.kafka;
+package com.example.playground.service.kafka;
 
-import com.example.playground.configuration.kafka.KafkaConfigurationProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;
 
@@ -13,17 +11,14 @@ import org.springframework.util.concurrent.ListenableFutureCallback;
 @RequiredArgsConstructor
 public class CustomKafkaProducer {
 
-    private final KafkaTemplate<String, String> kafkaTemplate;
-    private final KafkaConfigurationProperties properties;
+    private final KafkaTemplate<String, CustomMessage> kafkaTemplate;
 
-    @Scheduled(initialDelayString = "${kafka.producer.refresh-initial-delay}", fixedDelayString = "${kafka.producer.refresh-delay}")
-    public void sendMessage() {
-        String message = "Test message";
-        ListenableFuture<SendResult<String, String>> future = kafkaTemplate.send(properties.getTopic(), message);
+    public void sendMessage(CustomMessage message) {
+        ListenableFuture<SendResult<String, CustomMessage>> future = kafkaTemplate.send(message.getTopic(), message);
         future.addCallback(new ListenableFutureCallback<>() {
 
             @Override
-            public void onSuccess(SendResult<String, String> result) {
+            public void onSuccess(SendResult<String, CustomMessage> result) {
                 log.info("Sent message=[" + message + "] with offset=[" + result.getRecordMetadata().offset() + "]");
             }
 
