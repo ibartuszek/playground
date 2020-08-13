@@ -16,16 +16,15 @@ public class KafkaMessageService {
     private final CustomKafkaConsumer consumer;
     private final BlockingDeque<CustomMessage> messageQueue;
 
-    @Value("kafka.topic")
+    @Value("${kafka.topic}")
     private String topic;
 
     public String sendMessage(String message) {
-        CustomMessage customMessage = CustomMessage.builder()
-                .uuid(UUID.randomUUID().toString())
-                .timestamp(Instant.now())
-                .message(message)
-                .topic(topic)
-                .build();
+        CustomMessage customMessage = new CustomMessage();
+        customMessage.setUuid(UUID.randomUUID().toString());
+        customMessage.setTimestamp(Instant.now());
+        customMessage.setMessage(message);
+        customMessage.setTopic(topic);
         messageQueue.add(customMessage);
         return customMessage + " is scheduled to send kafka";
     }
