@@ -2,6 +2,8 @@ package com.example.playground.configuration.kafka;
 
 import com.example.playground.service.kafka.CustomKafkaConsumer;
 import com.example.playground.service.kafka.CustomMessage;
+import com.example.playground.service.kafka.CustomMessageDeserializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +14,6 @@ import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
-import org.springframework.kafka.support.serializer.JsonDeserializer;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,13 +26,16 @@ public class KafkaConsumerConfiguration {
     @Autowired
     private KafkaConfigurationProperties properties;
 
+    @Autowired
+    private ObjectMapper objectMapper;
+
     @Bean
     public ConsumerFactory<String, CustomMessage> consumerFactory() {
         Map<String, Object> configMap = new HashMap<>();
         configMap.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, properties.getBootstrapAddress());
         configMap.put(ConsumerConfig.GROUP_ID_CONFIG, properties.getGroupId());
         return new DefaultKafkaConsumerFactory<>(
-                configMap, new StringDeserializer(), new JsonDeserializer<>(CustomMessage.class));
+                configMap, new StringDeserializer(), customMessageDeserializer());
     }
 
     @Bean
@@ -45,6 +49,11 @@ public class KafkaConsumerConfiguration {
     @Bean
     public CustomKafkaConsumer customKafkaConsumer() {
         return new CustomKafkaConsumer();
+    }
+
+    @Bean
+    public CustomMessageDeserializer customMessageDeserializer() {
+        return new CustomMessageDeserializer(objectMapper);
     }
 
 }

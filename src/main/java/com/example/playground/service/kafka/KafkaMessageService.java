@@ -20,11 +20,12 @@ public class KafkaMessageService {
     private String topic;
 
     public String sendMessage(String message) {
-        CustomMessage customMessage = new CustomMessage();
-        customMessage.setUuid(UUID.randomUUID().toString());
-        customMessage.setTimestamp(Instant.now());
-        customMessage.setMessage(message);
-        customMessage.setTopic(topic);
+        CustomMessage customMessage = CustomMessage.builder()
+                .uuid(UUID.randomUUID().toString())
+                .timestamp(Instant.now())
+                .message(message)
+                .topic(topic)
+                .build();
         messageQueue.add(customMessage);
         return customMessage + " is scheduled to send kafka";
     }
