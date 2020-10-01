@@ -11,7 +11,7 @@ public class MongoConfigurationProperties {
 
     private boolean enabled;
     private String address;
-    private String port;
+    private int port;
     private String databaseName;
 
 }

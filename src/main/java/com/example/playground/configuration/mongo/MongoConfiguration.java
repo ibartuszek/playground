@@ -16,10 +16,10 @@ import java.text.MessageFormat;
 @Configuration
 @EnableMongoRepositories(basePackages = "com.example.playground.dal.mongo.repository")
 @ConditionalOnProperty(value = "mongo.enabled", havingValue = "true")
+@RequiredArgsConstructor
 public class MongoConfiguration extends AbstractMongoClientConfiguration {
 
-    @Autowired
-    private MongoConfigurationProperties properties;
+    private final MongoConfigurationProperties properties;
 
     @Override
     protected String getDatabaseName() {
@@ -29,7 +29,7 @@ public class MongoConfiguration extends AbstractMongoClientConfiguration {
     @Override
     public MongoClient mongoClient() {
         String connectionString = MessageFormat.format("mongodb://{0}:{1}/{2}",
-                properties.getAddress(), properties.getPort(), properties.getDatabaseName());
+                properties.getAddress(), properties.getPort() + "", properties.getDatabaseName());
         MongoClientSettings mongoClientSettings = MongoClientSettings.builder()
                 .applyConnectionString(new ConnectionString(connectionString))
                 .build();
