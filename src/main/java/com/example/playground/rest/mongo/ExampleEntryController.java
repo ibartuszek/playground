@@ -2,7 +2,6 @@ package com.example.playground.rest.mongo;
 
 import com.example.playground.dal.mongo.ExampleEntry;
 import com.example.playground.dal.mongo.repository.ExampleRepository;
-import com.example.playground.rest.CustomObject;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -27,10 +26,10 @@ public class ExampleEntryController {
     @ApiResponses(value ={
             @ApiResponse(responseCode = "200", description = "")
     })
-    @GetMapping
-    public ExampleEntry getEntryById(
+    @GetMapping("/{id}")
+    public ExampleEntry getById(
             @Parameter(description = "Given id", required = true, example = "5f759df0192cf82efd481c64")
-            @RequestParam String id) {
+            @PathVariable String id) {
         return exampleRepository.findById(id)
                 .orElse(null);
     }
@@ -40,7 +39,7 @@ public class ExampleEntryController {
             @ApiResponse(responseCode = "200", description = "")
     })
     @GetMapping("/all")
-    public List<ExampleEntry> getEntryList() {
+    public List<ExampleEntry> getAll() {
         return exampleRepository.findAll();
     }
 
@@ -49,7 +48,7 @@ public class ExampleEntryController {
             @ApiResponse(responseCode = "200", description = "")
     })
     @PostMapping
-    public ExampleEntry createEntryById(
+    public ExampleEntry create(
             @Parameter(description = "Entry to create", required = true)
             @RequestBody ExampleEntry entryToUpdate) {
         return exampleRepository.save(entryToUpdate);
@@ -60,7 +59,7 @@ public class ExampleEntryController {
             @ApiResponse(responseCode = "200", description = "")
     })
     @PutMapping
-    public ExampleEntry updateEntryById(
+    public ExampleEntry update(
             @Parameter(description = "Entry to update", required = true)
             @RequestBody ExampleEntry entryToUpdate) {
         return exampleRepository.save(entryToUpdate);
@@ -70,10 +69,10 @@ public class ExampleEntryController {
     @ApiResponses(value ={
             @ApiResponse(responseCode = "200", description = "")
     })
-    @DeleteMapping
-    public void deleteEntryById(
+    @DeleteMapping("/{id}")
+    public void deleteById(
             @Parameter(description = "Given id", required = true, example = "5f759df0192cf82efd481c64")
-            @RequestParam String id) {
+            @PathVariable String id) {
         exampleRepository.deleteById(id);
     }
 
