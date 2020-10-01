@@ -13,6 +13,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.Scanner;
+
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = PlaygroundApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
@@ -25,7 +27,7 @@ class PlaygroundApplicationTests {
 	private MockMvc mvc;
 
 	@Autowired
-	private ObjectMapper objectMapper;// = createObjectMapper();
+	private ObjectMapper objectMapper;
 
 	protected String getObjectAsString(Object object) {
 		try {
@@ -36,12 +38,10 @@ class PlaygroundApplicationTests {
 		}
 	}
 
-	private ObjectMapper createObjectMapper() {
-		ObjectMapper objectMapper = new ObjectMapper();
-		JavaTimeModule module = new JavaTimeModule();
-		objectMapper.registerModule(module);
-		objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-		return objectMapper;
+	protected static String readJsonFile(String file) {
+		Scanner s = new Scanner(PlaygroundApplicationTests.class.getResourceAsStream(file))
+				.useDelimiter("\\A");
+		return s.hasNext() ? s.next() : "";
 	}
 
 }

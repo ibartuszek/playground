@@ -3,10 +3,9 @@ package com.example.playground.mongo;
 import com.example.playground.PlaygroundApplicationTests;
 import com.example.playground.dal.mongo.ExampleEntry;
 import com.example.playground.dal.mongo.repository.ExampleRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.mongodb.BasicDBObject;
-import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
-import de.bwaldvogel.mongo.MongoServer;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.Document;
 import org.junit.jupiter.api.AfterEach;
@@ -17,8 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.util.Arrays;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -31,12 +29,6 @@ public class ExampleEntryControllerTest extends PlaygroundApplicationTests {
     private static final String MESSAGE_2 = "message 2";
     private static final String ID = "1";
     private static final String ID_2 = "2";
-
-    @Autowired
-    private MongoServer mongoServer;
-
-    @Autowired
-    private MongoClient mongoClient;
 
     @Autowired
     private MongoCollection<Document> mongoCollection;
@@ -175,6 +167,15 @@ public class ExampleEntryControllerTest extends PlaygroundApplicationTests {
         assertEquals(0, mongoCollection.countDocuments());
     }
 
+    @Test
+    public void initDbTest() {
+        // WHEN
+        testSetupWithJson();
+
+        // THEN
+        assertEquals(4, mongoCollection.countDocuments());
+    }
+
     private Document createDocument(String id, String message) {
         Document document = new Document();
         document.put("_id", id);
@@ -187,6 +188,22 @@ public class ExampleEntryControllerTest extends PlaygroundApplicationTests {
                 .id(id)
                 .message(message)
                 .build();
+    }
+
+    private void testSetupWithJson() {
+        String fileContent = readJsonFile("/mongo/init-db.json");
+        try {
+            List<Document> documentList = new ArrayList<>();
+            Map<String,Object>[] result = getObjectMapper().readValue(fileContent, HashMap[].class);
+            Arrays.stream(result).forEach(bsonObject -> documentList.add(createDocument(bsonObject)));
+            mongoCollection.insertMany(documentList);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private Document createDocument(Map<String, Object> bsonObject) {
+        return createDocument((String) bsonObject.get("_id"), (String) bsonObject.get("message"));
     }
 
 }
