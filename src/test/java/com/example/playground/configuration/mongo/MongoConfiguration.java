@@ -1,58 +1,39 @@
 package com.example.playground.configuration.mongo;
 
-import com.mongodb.ConnectionString;
-import com.mongodb.MongoClientSettings;
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
-import de.bwaldvogel.mongo.MongoServer;
-import de.bwaldvogel.mongo.backend.memory.MemoryBackend;
+import com.mongodb.client.MongoDatabase;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.Document;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
-import org.springframework.data.mongodb.config.AbstractMongoClientConfiguration;
+import org.springframework.data.mongodb.core.MongoTemplate;
 
 @Configuration
-@Primary
 @RequiredArgsConstructor
+@Primary
 @Slf4j
-public class MongoConfiguration extends AbstractMongoClientConfiguration {
+@Getter
+// Enable Spring autoConfiguration -> do not extend AbstractMongoClientConfiguration
+// It is used by ExampleEntryControllerTes it tests
+public class MongoConfiguration {
 
     private static final String COLLECTION_NAME = "exampleCollection";
 
-    private final MongoConfigurationProperties properties;
+    @Autowired
+    private MongoTemplate mongoTemplate;
 
     @Bean
-    public MongoServer mongoServer() {
-        log.info("Creating mongoServer");
-        return new MongoServer(new MemoryBackend());
+    public MongoDatabase mongoDatabase() {
+        return mongoTemplate.getDb();
     }
 
     @Bean
-    public MongoCollection<Document> collection() {
-        log.info("Creating mongoCollection");
-        return mongoClient()
-                .getDatabase(properties.getDatabaseName())
-                .getCollection(COLLECTION_NAME);
-    }
-
-    @Override
-    protected String getDatabaseName() {
-        return properties.getDatabaseName();
-    }
-
-    @Override
-    @Bean
-    public MongoClient mongoClient() {
-        log.info("Creating mongo client");
-        String connectionString = "mongodb:/" + mongoServer().bind() + "/" + properties.getDatabaseName();
-        MongoClientSettings mongoClientSettings = MongoClientSettings.builder()
-                .applyConnectionString(new ConnectionString(connectionString))
-                .build();
-        return MongoClients.create(mongoClientSettings);
+    public MongoCollection<Document> mongoCollection() {
+        return mongoDatabase().getCollection(COLLECTION_NAME);
     }
 
 }

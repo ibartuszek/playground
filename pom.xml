@@ -17,7 +17,7 @@
     <properties>
         <java.version>11</java.version>
         <springdoc-openapi-data-rest.version>1.4.3</springdoc-openapi-data-rest.version>
-        <mongo-java-server.version>1.35.0</mongo-java-server.version>
+        <de-flapdoodle-embed-mongo.version>2.2.0</de-flapdoodle-embed-mongo.version>
     </properties>
 
     <dependencies>
@@ -82,11 +82,12 @@
         </dependency>
 
         <dependency>
-            <groupId>de.bwaldvogel</groupId>
-            <artifactId>mongo-java-server</artifactId>
-            <version>${mongo-java-server.version}</version>
+            <groupId>de.flapdoodle.embed</groupId>
+            <artifactId>de.flapdoodle.embed.mongo</artifactId>
+            <version>${de-flapdoodle-embed-mongo.version}</version>
             <scope>test</scope>
         </dependency>
+
 
     </dependencies>
 

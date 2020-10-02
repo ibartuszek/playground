@@ -22,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Slf4j
+// Run with MongoConfiguration
 public class ExampleEntryControllerTest extends PlaygroundApplicationTests {
 
     private static final String BASE_URL = "/playground/mongo/example-entry/";
