@@ -33,7 +33,7 @@ public class ExampleEntryControllerTest extends PlaygroundApplicationTests {
     private static final String MESSAGE_2 = "message 2";
     private static final String ID = "1";
     private static final String ID_2 = "2";
-    public static final String MONGO_ID = "_id";
+    private static final String MONGO_ID = "_id";
 
     @Autowired
     private MongoTemplate mongoTemplate;

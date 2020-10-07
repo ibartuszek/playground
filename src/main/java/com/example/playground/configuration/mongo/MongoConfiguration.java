@@ -7,6 +7,7 @@ import com.mongodb.client.MongoClients;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.mongodb.config.AbstractMongoClientConfiguration;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
@@ -16,6 +17,7 @@ import java.text.MessageFormat;
 @EnableMongoRepositories(basePackages = "com.example.playground.dal.mongo.repository")
 @ConditionalOnProperty(value = "mongo.enabled", havingValue = "true")
 @RequiredArgsConstructor
+@Profile("!it")
 public class MongoConfiguration extends AbstractMongoClientConfiguration {
 
     private final MongoConfigurationProperties properties;
