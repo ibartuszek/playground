@@ -7,6 +7,9 @@ import lombok.EqualsAndHashCode;
 import nonapi.io.github.classgraph.json.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.Instant;
+import java.util.Date;
+
 @Document(collection = "exampleCollection")
 @Data
 @Builder
@@ -19,5 +22,9 @@ public class ExampleEntry {
 
     @Schema(example = "My very uniq custom message")
     private String message;
+
+    private Instant timeStamp;
+
+    private Date date;
 
 }
