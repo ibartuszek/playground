@@ -45,7 +45,7 @@ public class AbstractMongoTest extends PlaygroundApplicationTests {
 
     @BeforeEach
     public void setUp() {
-        mongoTemplate.save(createDocument(ID, MESSAGE, TIME_STAMP, DATE), COLLECTION);
+        exampleRepository.save(createExampleEntity(ID, MESSAGE, TIME_STAMP, DATE));
     }
 
     @AfterEach
@@ -95,20 +95,11 @@ public class AbstractMongoTest extends PlaygroundApplicationTests {
     protected void testSetupWithJson() {
         String fileContent = readJsonFile("/mongo/init-db.json");
         try {
-            Map<String,Object>[] result = getObjectMapper().readValue(fileContent, HashMap[].class);
-            Arrays.stream(result).forEach(bsonObject -> mongoTemplate.save(createDocument(bsonObject), COLLECTION));
+            ExampleEntry[] result = getObjectMapper().readValue(fileContent, ExampleEntry[].class);
+            Arrays.stream(result).forEach(entry -> exampleRepository.save(entry));
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
     }
-
-    protected Document createDocument(Map<String, Object> bsonObject) {
-        return createDocument((String) bsonObject.get(MONGO_ID),
-                (String) bsonObject.get("message"),
-                (String) bsonObject.get("timeStamp"),
-                Date.from(Instant.parse((String) (bsonObject.get("date"))))
-        );
-    }
-
 
 }
