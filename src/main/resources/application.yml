@@ -1,0 +1,6 @@
+mongo:
+  enabled: true
+  address: "192.168.175.107"
+  port: 27017
+  database-name: playground
+
