@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.3.1.RELEASE</version>
+        <version>2.4.2</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.example</groupId>
@@ -16,7 +16,7 @@
 
     <properties>
         <java.version>11</java.version>
-        <springdoc-openapi-data-rest.version>1.4.3</springdoc-openapi-data-rest.version>
+        <springdoc-openapi-data-rest.version>1.5.2</springdoc-openapi-data-rest.version>
         <de-flapdoodle-embed-mongo.version>2.2.0</de-flapdoodle-embed-mongo.version>
         <vadin.version>18.0.5</vadin.version>
     </properties>
