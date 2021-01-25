@@ -18,6 +18,7 @@
         <java.version>11</java.version>
         <springdoc-openapi-data-rest.version>1.4.3</springdoc-openapi-data-rest.version>
         <de-flapdoodle-embed-mongo.version>2.2.0</de-flapdoodle-embed-mongo.version>
+        <vadin.version>18.0.5</vadin.version>
     </properties>
 
     <dependencies>
@@ -88,6 +89,13 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- Vadiin -->
+
+        <dependency>
+            <groupId>com.vaadin</groupId>
+            <artifactId>vaadin-spring-boot-starter</artifactId>
+            <version>${vadin.version}</version>
+        </dependency>
 
     </dependencies>
 
