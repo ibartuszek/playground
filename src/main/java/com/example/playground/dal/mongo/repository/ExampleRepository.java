@@ -14,6 +14,8 @@ public interface ExampleRepository extends MongoRepository<ExampleEntry, String>
 
     List<ExampleEntry> findAllByTimeStampBefore(Instant date);
 
+    List<ExampleEntry> findAllByTimeStampAfter(Instant date);
+
     List<ExampleEntry> findAllByDateBefore(Date date);
 
 }
