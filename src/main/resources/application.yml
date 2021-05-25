@@ -6,3 +6,9 @@ kafka:
   producer:
     refresh-initial-delay: PT0S
     refresh-delay: PT10S
+
+mongo:
+  enabled: true
+  address: "192.168.175.107"
+  port: 27017
+  database-name: playground

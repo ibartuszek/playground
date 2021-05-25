@@ -18,9 +18,12 @@
         <java.version>11</java.version>
         <spring-kafka.version>2.5.4.RELEASE</spring-kafka.version>
         <springdoc-openapi-data-rest.version>1.4.3</springdoc-openapi-data-rest.version>
+        <de-flapdoodle-embed-mongo.version>2.2.0</de-flapdoodle-embed-mongo.version>
     </properties>
 
     <dependencies>
+
+        <!-- Base dependencies -->
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -29,7 +32,14 @@
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-webflux</artifactId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.junit.vintage</groupId>
+                    <artifactId>junit-vintage-engine</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
@@ -38,7 +48,20 @@
             <optional>true</optional>
         </dependency>
 
-        <!-- Openapi -->
+        <!-- Reactive -->
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webflux</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.projectreactor</groupId>
+            <artifactId>reactor-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Openapi - documentation -->
 
         <dependency>
             <groupId>org.springdoc</groupId>
@@ -59,22 +82,17 @@
             <version>${spring-kafka.version}</version>
         </dependency>
 
-        <!-- Test -->
+        <!-- MongoDb -->
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.junit.vintage</groupId>
-                    <artifactId>junit-vintage-engine</artifactId>
-                </exclusion>
-            </exclusions>
+            <artifactId>spring-boot-starter-data-mongodb</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>io.projectreactor</groupId>
-            <artifactId>reactor-test</artifactId>
+            <groupId>de.flapdoodle.embed</groupId>
+            <artifactId>de.flapdoodle.embed.mongo</artifactId>
+            <version>${de-flapdoodle-embed-mongo.version}</version>
             <scope>test</scope>
         </dependency>
 

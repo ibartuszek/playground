@@ -6,10 +6,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
 
@@ -31,6 +28,18 @@ public class BaseController {
             @RequestParam String message) {
         log.info("test: " + message);
         return "message: "+ message + " (" + date + ")";
+    }
+
+    @Operation(summary = "Post a custom object with lombok annotations which was mapped by Spring automatically")
+    @ApiResponses(value ={
+            @ApiResponse(responseCode = "200", description = "")
+    })
+    @PostMapping("/resource/custom-object")
+    public CustomObject createCustomObject(
+            @Parameter(description = "Given object", required = true)
+            @RequestBody CustomObject object) {
+        log.info("Posted object: " + object);
+        return object;
     }
 
 }
