@@ -1,0 +1,12 @@
+kafka:
+#  bootstrapAddress: ${spring.embedded.kafka.brokers}
+  bootstrapAddress: localhost:123
+  bootstrap-servers: localhost:123
+  test:
+    producer:
+      bootstrap-servers: localhost:123
+      compression-type: gzip
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      retries: 3
+

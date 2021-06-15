@@ -1,0 +1,4 @@
+kafka.bootstrapAddress: ${UBUNTU_ADDRESS}:9094
+mongo.address: ${UBUNTU_ADDRESS}
+
+UBUNTU_ADDRESS: localhost

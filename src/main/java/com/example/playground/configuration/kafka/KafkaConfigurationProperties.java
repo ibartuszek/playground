@@ -13,5 +13,7 @@ public class KafkaConfigurationProperties {
     private String bootstrapAddress;
     private String topic;
     private String groupId;
+    private Boolean batch;
+    private Integer concurrency;
 
 }

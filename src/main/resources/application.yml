@@ -1,14 +1,16 @@
 kafka:
   enabled: true
-  bootstrapAddress: 192.168.0.216:9092
+  bootstrapAddress: kafka:9092
   topic: test-topic
   group-id: test-group-id
+  batch: true
+  concurrency: 2
   producer:
     refresh-initial-delay: PT0S
     refresh-delay: PT10S
 
 mongo:
   enabled: true
-  address: "192.168.175.107"
+  address: mongodb
   port: 27017
   database-name: playground

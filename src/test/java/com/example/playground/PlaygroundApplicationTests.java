@@ -1,10 +1,15 @@
 package com.example.playground;
 
+import com.example.playground.configuration.kafka.MockKafkaHelper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.kafka.clients.consumer.MockConsumer;
+import org.json.JSONException;
+import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.ExtensionContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.AutoConfigureDataMongo;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -29,14 +34,16 @@ import static org.mockito.Mockito.when;
 @Slf4j
 @ActiveProfiles("it")
 @EnableMongoRepositories("com.example.playground.dal.mongo.repository")
-public
-class PlaygroundApplicationTests {
+public abstract class PlaygroundApplicationTests implements BeforeEachCallback {
 
 	@Autowired
 	private MockMvc mvc;
 
 	@Autowired
 	private ObjectMapper objectMapper;
+
+	@Autowired
+	private MockKafkaHelper mockKafkaHelper;
 
 	@MockBean
 	private Clock clock;
@@ -50,7 +57,7 @@ class PlaygroundApplicationTests {
 		}
 	}
 
-	protected static String readJsonFile(String file) {
+	public static String readJsonFile(String file) {
 		Scanner s = new Scanner(PlaygroundApplicationTests.class.getResourceAsStream(file))
 				.useDelimiter("\\A");
 		return s.hasNext() ? s.next() : "";
@@ -58,6 +65,27 @@ class PlaygroundApplicationTests {
 
 	protected void setCurrentDate(String date) {
 		when(clock.instant()).thenReturn(Instant.parse(date));
+	}
+
+	@Override
+	public void beforeEach(ExtensionContext context) {
+		log.info("Starting test: " + context.getTestClass() + "." + context.getTestMethod());
+	}
+
+	public void resetMessageProducers() {
+		mockKafkaHelper.resetMessageProducers();
+	}
+
+	public void assertKafkaMessageSent(String expectedBodyJson, String topic) throws JSONException {
+		mockKafkaHelper.assertKafkaMessageSent(expectedBodyJson, topic);
+	}
+
+	public <S, U> void sendKafkaMessage(String topic, Object key, Object message, MockConsumer<S, U> mockConsumer) {
+		mockKafkaHelper.sendKafkaMessage(topic, key, message, mockConsumer);
+	}
+
+	public <S, U> void waitUntilConsumed(String topic, MockConsumer<S, U> mockConsumer) {
+		mockKafkaHelper.waitUntilConsumed(topic, mockConsumer);
 	}
 
 }

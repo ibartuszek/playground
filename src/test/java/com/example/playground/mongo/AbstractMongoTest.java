@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 
 @Getter
-public class AbstractMongoTest extends PlaygroundApplicationTests {
+public abstract class AbstractMongoTest extends PlaygroundApplicationTests {
 
     protected static final String COLLECTION = "exampleCollection";
 
@@ -35,7 +35,6 @@ public class AbstractMongoTest extends PlaygroundApplicationTests {
     protected static final Instant TIME_STAMP_2 = Instant.parse("2020-10-14T09:00:00Z");
     protected static final Date DATE = Date.from(TIME_STAMP);
     protected static final Date DATE_2 = Date.from(TIME_STAMP_2);
-
 
     @Autowired
     private MongoTemplate mongoTemplate;
